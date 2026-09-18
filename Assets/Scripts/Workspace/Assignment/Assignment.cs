@@ -7,17 +7,17 @@ namespace Assignment
     {
         public void Start()
         {
-            // AS01_CountWords();
-            // AS02_CountNumber();
-            // AS03_CheckValidBrackets();
-            // AS04_PrintReverseLinkedList();
-            // AS05_FindMiddleElement();
-            // AS06_MergeDictionaries();
-            // AS07_RemoveDuplicatesFromLinkedList();
-            // AS08_TopFrequentNumber();
-            // AS09_PlayerInventory();
-            // AS10_GameEventQueue();
-            // AS11_PlayerStatsTracker();
+            AS01_CountWords();
+            AS02_CountNumber();
+            AS03_CheckValidBrackets();
+            AS04_PrintReverseLinkedList();
+            AS05_FindMiddleElement();
+            AS06_MergeDictionaries();
+            AS07_RemoveDuplicatesFromLinkedList();
+            AS08_TopFrequentNumber();
+            AS09_PlayerInventory();
+            AS10_GameEventQueue();
+            AS11_PlayerStatsTracker();
         }
 
         #region Assignment
@@ -28,7 +28,33 @@ namespace Assignment
         public void AS01_CountWords()
         {
             string[] words = as01Words;
-            throw new System.NotImplementedException();
+            if (words == null || words.Length == 0) return;
+
+            Dictionary<string, int> wordCounts = new Dictionary<string, int>();
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                string currentWord = words[i];
+                if (wordCounts.ContainsKey(currentWord))
+                {
+                    wordCounts[currentWord]++;
+                }
+                else
+                {
+                    wordCounts[currentWord] = 1;
+                }
+            }
+
+            string[] keys = new string[wordCounts.Count];
+            int[] values = new int[wordCounts.Count];
+
+            wordCounts.Keys.CopyTo(keys, 0);
+            wordCounts.Values.CopyTo(values, 0);
+
+            for (int i = 0; i < keys.Length; i++)
+            {
+                Debug.Log($"word: '{keys[i]}' count: {values[i]}");
+            }
         }
 
         [Header("AS02 - Count Number")]
@@ -37,7 +63,33 @@ namespace Assignment
         public void AS02_CountNumber()
         {
             int[] numbers = as02Numbers;
-            throw new System.NotImplementedException();
+            if (numbers == null || numbers.Length == 0) return;
+
+            Dictionary<int, int> numberCounts = new Dictionary<int, int>();
+
+            for (int i = 0; i < numbers.Length; i++)
+            {
+                int currentNum = numbers[i];
+                if (numberCounts.ContainsKey(currentNum))
+                {
+                    numberCounts[currentNum]++;
+                }
+                else
+                {
+                    numberCounts[currentNum] = 1;
+                }
+            }
+
+            int[] keys = new int[numberCounts.Count];
+            int[] values = new int[numberCounts.Count];
+
+            numberCounts.Keys.CopyTo(keys, 0);
+            numberCounts.Values.CopyTo(values, 0);
+
+            for (int i = 0; i < keys.Length; i++)
+            {
+                Debug.Log($"number: {keys[i]} count: {values[i]}");
+            }
         }
 
         [Header("AS03 - Check Valid Brackets")]
@@ -46,7 +98,50 @@ namespace Assignment
         public void AS03_CheckValidBrackets()
         {
             string input = as03Input;
-            throw new System.NotImplementedException();
+            if (input == null) return;
+
+            Dictionary<char, char> bracketPairs = new Dictionary<char, char>()
+            {
+                { ')', '(' },
+                { ']', '[' },
+                { '}', '{' }
+            };
+
+            LinkedList<char> stack = new LinkedList<char>();
+            bool isValid = true;
+
+            foreach (char c in as03Input)
+            {
+                if (c == '(' || c == '[' || c == '{')
+                {
+                    stack.AddLast(c);
+                }
+                else if (c == ')' || c == ']' || c == '}')
+                {
+                    if (stack.Count == 0)
+                    {
+                        isValid = false;
+                        break;
+                    }
+
+                    if (stack.Last.Value == bracketPairs[c])
+                    {
+                        stack.RemoveLast();
+                    }
+                    else
+                    {
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+
+            if (stack.Count > 0)
+            {
+                isValid = false;
+            }
+
+            Debug.Log(isValid ? "Valid" : "Invalid");
         }
 
         [Header("AS04 - Print Reverse Linked List")]
@@ -54,8 +149,21 @@ namespace Assignment
 
         public void AS04_PrintReverseLinkedList()
         {
-            LinkedList<int> list = as04List.GetLinkedList();
-            throw new System.NotImplementedException();
+            //LinkedList<int> list = as04List.GetLinkedList();
+            LinkedList<int> list = as04List != null ? as04List.GetLinkedList() : null;
+
+            if (list == null || list.Count == 0)
+            {
+                Debug.Log("List is empty");
+                return;
+            }
+
+            LinkedListNode<int> current = list.Last;
+            while (current != null)
+            {
+                Debug.Log(current.Value);
+                current = current.Previous;
+            }
         }
 
         [Header("AS05 - Find Middle Element")]
@@ -63,8 +171,25 @@ namespace Assignment
 
         public void AS05_FindMiddleElement()
         {
-            LinkedList<string> list = as05List.GetLinkedList();
-            throw new System.NotImplementedException();
+            //LinkedList<string> list = as05List.GetLinkedList();
+            LinkedList<string> list = as05List != null ? as05List.GetLinkedList() : null;
+
+            if (list == null || list.Count == 0)
+            {
+                Debug.Log("List is empty");
+                return;
+            }
+
+            LinkedListNode<string> slow = list.First;
+            LinkedListNode<string> fast = list.First;
+
+            while (fast != null && fast.Next != null)
+            {
+                slow = slow.Next;
+                fast = fast.Next.Next;
+            }
+
+            Debug.Log(slow.Value);
         }
 
         [Header("AS06 - Merge Dictionaries")]
@@ -73,9 +198,29 @@ namespace Assignment
 
         public void AS06_MergeDictionaries()
         {
-            Dictionary<string, int> dict1 = as06FirstDictionary.GetDictionary();
-            Dictionary<string, int> dict2 = as06SecondDictionary.GetDictionary();
-            throw new System.NotImplementedException();
+            //Dictionary<string, int> dict1 = as06FirstDictionary.GetDictionary();
+            //Dictionary<string, int> dict2 = as06SecondDictionary.GetDictionary();
+            Dictionary<string, int> dict1 = as06FirstDictionary != null ? as06FirstDictionary.GetDictionary() : new Dictionary<string, int>();
+            Dictionary<string, int> dict2 = as06SecondDictionary != null ? as06SecondDictionary.GetDictionary() : new Dictionary<string, int>();
+
+            Dictionary<string, int> mergedDictionary = new Dictionary<string, int>(dict1);
+
+            foreach (KeyValuePair<string, int> entry in dict2)
+            {
+                if (mergedDictionary.ContainsKey(entry.Key))
+                {
+                    mergedDictionary[entry.Key] += entry.Value;
+                }
+                else
+                {
+                    mergedDictionary[entry.Key] = entry.Value;
+                }
+            }
+
+            foreach (KeyValuePair<string, int> entry in mergedDictionary)
+            {
+                Debug.Log($"key: {entry.Key}, value: {entry.Value}");
+            }
         }
 
         [Header("AS07 - Remove Duplicates From Linked List")]
@@ -83,8 +228,34 @@ namespace Assignment
 
         public void AS07_RemoveDuplicatesFromLinkedList()
         {
-            LinkedList<int> list = as07List.GetLinkedList();
-            throw new System.NotImplementedException();
+            //LinkedList<int> list = as07List.GetLinkedList();
+            LinkedList<int> list = as07List != null ? as07List.GetLinkedList() : null;
+
+            if (list == null || list.Count == 0) return;
+
+            Dictionary<int, bool> seen = new Dictionary<int, bool>();
+            LinkedListNode<int> current = list.First;
+
+            while (current != null)
+            {
+                LinkedListNode<int> nextNode = current.Next;
+
+                if (seen.ContainsKey(current.Value))
+                {
+                    list.Remove(current);
+                }
+                else
+                {
+                    seen[current.Value] = true;
+                }
+
+                current = nextNode;
+            }
+
+            foreach (int val in list)
+            {
+                Debug.Log(val);
+            }
         }
 
         [Header("AS08 - Top Frequent Number")]
@@ -93,7 +264,41 @@ namespace Assignment
         public void AS08_TopFrequentNumber()
         {
             int[] numbers = as08Numbers;
-            throw new System.NotImplementedException();
+            if (numbers == null || numbers.Length == 0)
+            {
+                Debug.Log("Input array is empty");
+                return;
+            }
+
+            Dictionary<int, int> counts = new Dictionary<int, int>();
+
+            for (int i = 0; i < numbers.Length; i++)
+            {
+                int num = numbers[i];
+                if (counts.ContainsKey(num))
+                {
+                    counts[num]++;
+                }
+                else
+                {
+                    counts[num] = 1;
+                }
+            }
+
+            int topNum = numbers[0];
+            int maxCount = counts[topNum];
+
+            for (int i = 0; i < numbers.Length; i++)
+            {
+                int num = numbers[i];
+                if (counts[num] > maxCount)
+                {
+                    maxCount = counts[num];
+                    topNum = num;
+                }
+            }
+
+            Debug.Log($"{topNum} count: {maxCount}");
         }
 
         [Header("AS09 - Player Inventory")]
@@ -103,10 +308,24 @@ namespace Assignment
 
         public void AS09_PlayerInventory()
         {
-            Dictionary<string, int> inventory = as09Inventory.GetDictionary();
+            //Dictionary<string, int> inventory = as09Inventory.GetDictionary();
             string itemName = as09ItemName;
             int quantity = as09Quantity;
-            throw new System.NotImplementedException();
+            Dictionary<string, int> inventory = as09Inventory != null ? as09Inventory.GetDictionary() : new Dictionary<string, int>();
+
+            if (inventory.ContainsKey(itemName))
+            {
+                inventory[itemName] += quantity;
+            }
+            else
+            {
+                inventory[itemName] = quantity;
+            }
+
+            foreach (KeyValuePair<string, int> item in inventory)
+            {
+                Debug.Log($"{item.Key}: {item.Value}");
+            }
         }
 
         [Header("AS10 - Game Event Queue")]
@@ -114,8 +333,37 @@ namespace Assignment
 
         public void AS10_GameEventQueue()
         {
-            LinkedList<GameEvent> eventQueue = as10EventQueue.GetLinkedList();
-            throw new System.NotImplementedException();
+            //LinkedList<GameEvent> eventQueue = as10EventQueue.GetLinkedList();
+            LinkedList<GameEvent> eventQueue = as10EventQueue != null ? as10EventQueue.GetLinkedList() : null;
+
+            if (eventQueue == null || eventQueue.Count == 0)
+            {
+                Debug.Log("Event queue is empty");
+                return;
+            }
+
+            while (eventQueue.Count > 0)
+            {
+                GameEvent currentEvent = eventQueue.First.Value;
+                eventQueue.RemoveFirst();
+
+                Debug.Log($"Processing event: {currentEvent.name}");
+                Debug.Log($"Remaining events in queue: {eventQueue.Count}");
+
+                string type = currentEvent.eventType.ToLower();
+                if (type == "enemy")
+                {
+                    Debug.Log($"Enemy event processed - {currentEvent.name}");
+                }
+                else if (type == "powerup")
+                {
+                    Debug.Log($"Power-up event processed - {currentEvent.name}");
+                }
+                else if (type == "level")
+                {
+                    Debug.Log($"Level event processed - {currentEvent.name}");
+                }
+            }
         }
 
         [Header("AS11 - Player Stats Tracker")]
@@ -125,10 +373,27 @@ namespace Assignment
 
         public void AS11_PlayerStatsTracker()
         {
-            Dictionary<string, int> playerStats = as11PlayerStats.GetDictionary();
+            //Dictionary<string, int> playerStats = as11PlayerStats.GetDictionary();
             string statName = as11StatName;
             int value = as11Value;
-            throw new System.NotImplementedException();
+            Dictionary<string, int> playerStats = as11PlayerStats != null ? as11PlayerStats.GetDictionary() : new Dictionary<string, int>();
+
+            if (playerStats.ContainsKey(statName))
+            {
+                playerStats[statName] += value;
+            }
+            else
+            {
+                playerStats[statName] = value;
+            }
+
+            Debug.Log($"Updated {statName}: {playerStats[statName]}");
+            Debug.Log("Current player statistics:");
+
+            foreach (KeyValuePair<string, int> stat in playerStats)
+            {
+                Debug.Log($"{stat.Key}: {stat.Value}");
+            }
         }
 
         #endregion
